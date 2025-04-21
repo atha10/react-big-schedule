@@ -1,16 +1,16 @@
-import dayjs from "dayjs";
-import quarterOfYear from "dayjs/plugin/quarterOfYear";
-import utc from "dayjs/plugin/utc";
-import weekday from "dayjs/plugin/weekday";
-import { RRuleSet, rrulestr } from "rrule";
+import dayjs from 'dayjs';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import utc from 'dayjs/plugin/utc';
+import weekday from 'dayjs/plugin/weekday';
+import { RRuleSet, rrulestr } from 'rrule';
 import {
   CellUnit,
   DATE_FORMAT,
   DATETIME_FORMAT,
   ViewType,
-} from "../config/default";
-import config from "../config/scheduler";
-import behaviors from "../helper/behaviors";
+} from '../config/default';
+import config from '../config/scheduler';
+import behaviors from '../helper/behaviors';
 
 export default class SchedulerData {
   constructor(
@@ -19,7 +19,7 @@ export default class SchedulerData {
     showAgenda = false,
     isEventPerspective = false,
     newConfig = undefined,
-    newBehaviors = undefined
+    newBehaviors = undefined,
   ) {
     this.resources = [];
     this.events = [];
@@ -39,13 +39,11 @@ export default class SchedulerData {
     dayjs.extend(weekday);
     dayjs.extend(utc);
     this.localeDayjs = dayjs;
-    this.config =
-      newConfig === undefined ? config : { ...config, ...newConfig };
+    this.config = newConfig === undefined ? config : { ...config, ...newConfig };
     this._validateMinuteStep(this.config.minuteStep);
-    this.behaviors =
-      newBehaviors === undefined
-        ? behaviors
-        : { ...behaviors, ...newBehaviors };
+    this.behaviors = newBehaviors === undefined
+      ? behaviors
+      : { ...behaviors, ...newBehaviors };
     this._resolveDate(0, date);
     this._createHeaders();
     this._createRenderData();
@@ -105,7 +103,7 @@ export default class SchedulerData {
   }
 
   addResource(resource) {
-    const existedResources = this.resources.filter((x) => x.id === resource.id);
+    const existedResources = this.resources.filter(x => x.id === resource.id);
     if (existedResources.length === 0) {
       this.resources.push(resource);
       this._createRenderData();
@@ -114,7 +112,7 @@ export default class SchedulerData {
 
   addEventGroup(eventGroup) {
     const existedEventGroups = this.eventGroups.filter(
-      (x) => x.id === eventGroup.id
+      x => x.id === eventGroup.id,
     );
     if (existedEventGroups.length === 0) {
       this.eventGroups.push(eventGroup);
@@ -148,8 +146,7 @@ export default class SchedulerData {
   }
 
   setScrollToSpecialDayjs(scrollToSpecialDayjs) {
-    if (this.config.scrollToSpecialDayjsEnabled)
-      this.scrollToSpecialDayjs = scrollToSpecialDayjs;
+    if (this.config.scrollToSpecialDayjsEnabled) this.scrollToSpecialDayjs = scrollToSpecialDayjs;
   }
 
   prev() {
@@ -176,7 +173,7 @@ export default class SchedulerData {
   setViewType(
     viewType = ViewType.Week,
     showAgenda = false,
-    isEventPerspective = false
+    isEventPerspective = false,
   ) {
     this.showAgenda = showAgenda;
     this.isEventPerspective = isEventPerspective;
@@ -186,40 +183,40 @@ export default class SchedulerData {
       let date = this.startDate;
 
       if (
-        viewType === ViewType.Custom ||
-        viewType === ViewType.Custom1 ||
-        viewType === ViewType.Custom2
+        viewType === ViewType.Custom
+        || viewType === ViewType.Custom1
+        || viewType === ViewType.Custom2
       ) {
         this.viewType = viewType;
         this._resolveDate(0, date);
       } else {
         if (this.viewType < viewType) {
           if (viewType === ViewType.Week) {
-            this.startDate = this.localeDayjs(new Date(date)).startOf("week");
+            this.startDate = this.localeDayjs(new Date(date)).startOf('week');
             this.endDate = this.localeDayjs(new Date(this.startDate)).endOf(
-              "week"
+              'week',
             );
           } else if (viewType === ViewType.Month) {
-            this.startDate = this.localeDayjs(new Date(date)).startOf("month");
+            this.startDate = this.localeDayjs(new Date(date)).startOf('month');
             this.endDate = this.localeDayjs(new Date(this.startDate)).endOf(
-              "month"
+              'month',
             );
           } else if (viewType === ViewType.Quarter) {
             this.startDate = this.localeDayjs(new Date(date)).startOf(
-              "quarter"
+              'quarter',
             );
             this.endDate = this.localeDayjs(new Date(this.startDate)).endOf(
-              "quarter"
+              'quarter',
             );
           } else if (viewType === ViewType.Year) {
-            this.startDate = this.localeDayjs(new Date(date)).startOf("year");
+            this.startDate = this.localeDayjs(new Date(date)).startOf('year');
             this.endDate = this.localeDayjs(new Date(this.startDate)).endOf(
-              "year"
+              'year',
             );
           }
         } else {
           const start = this.localeDayjs(new Date(this.startDate));
-          const end = this.localeDayjs(new Date(this.endDate)).add(1, "days");
+          const end = this.localeDayjs(new Date(this.endDate)).add(1, 'days');
 
           if (this.selectDate !== undefined) {
             const selectDate = this.localeDayjs(new Date(this.selectDate));
@@ -230,7 +227,7 @@ export default class SchedulerData {
 
           const now = this.localeDayjs();
           if (now >= start && now < end) {
-            date = now.startOf("day");
+            date = now.startOf('day');
           }
 
           if (viewType === ViewType.Day) {
@@ -238,21 +235,21 @@ export default class SchedulerData {
             this.endDate = this.startDate;
             this.cellUnit = CellUnit.Hour;
           } else if (viewType === ViewType.Week) {
-            this.startDate = this.localeDayjs(new Date(date)).startOf("week");
+            this.startDate = this.localeDayjs(new Date(date)).startOf('week');
             this.endDate = this.localeDayjs(new Date(this.startDate)).endOf(
-              "week"
+              'week',
             );
           } else if (viewType === ViewType.Month) {
-            this.startDate = this.localeDayjs(new Date(date)).startOf("month");
+            this.startDate = this.localeDayjs(new Date(date)).startOf('month');
             this.endDate = this.localeDayjs(new Date(this.startDate)).endOf(
-              "month"
+              'month',
             );
           } else if (viewType === ViewType.Quarter) {
             this.startDate = this.localeDayjs(new Date(date)).startOf(
-              "quarter"
+              'quarter',
             );
             this.endDate = this.localeDayjs(new Date(this.startDate)).endOf(
-              "quarter"
+              'quarter',
             );
           }
         }
@@ -275,8 +272,8 @@ export default class SchedulerData {
 
   isSchedulerResponsive() {
     return (
-      !!this.config.schedulerWidth.endsWith &&
-      this.config.schedulerWidth.endsWith("%")
+      !!this.config.schedulerWidth.endsWith
+      && this.config.schedulerWidth.endsWith('%')
     );
   }
 
@@ -285,7 +282,7 @@ export default class SchedulerData {
     let slotIndent = -1;
     let isExpanded = false;
     const expandedMap = new Map();
-    this.renderData.forEach((item) => {
+    this.renderData.forEach(item => {
       if (slotEntered === false) {
         if (item.slotId === slotId && item.hasChildren) {
           slotEntered = true;
@@ -316,24 +313,23 @@ export default class SchedulerData {
 
   isResourceViewResponsive() {
     const resourceTableWidth = this.getResourceTableConfigWidth();
-    return !!resourceTableWidth.endsWith && resourceTableWidth.endsWith("%");
+    return !!resourceTableWidth.endsWith && resourceTableWidth.endsWith('%');
   }
 
   isContentViewResponsive() {
     const contentCellWidth = this.getContentCellConfigWidth();
-    return !!contentCellWidth.endsWith && contentCellWidth.endsWith("%");
+    return !!contentCellWidth.endsWith && contentCellWidth.endsWith('%');
   }
 
   getSchedulerWidth() {
-    const baseWidth =
-      this.documentWidth - this.config.besidesWidth > 0
-        ? this.documentWidth - this.config.besidesWidth
-        : 0;
+    const baseWidth = this.documentWidth - this.config.besidesWidth > 0
+      ? this.documentWidth - this.config.besidesWidth
+      : 0;
     return this.isSchedulerResponsive()
       ? parseInt(
-          (baseWidth * Number(this.config.schedulerWidth.slice(0, -1))) / 100,
-          10
-        )
+        (baseWidth * Number(this.config.schedulerWidth.slice(0, -1))) / 100,
+        10,
+      )
       : this.config.schedulerWidth;
   }
 
@@ -342,16 +338,15 @@ export default class SchedulerData {
     const schedulerWidth = this.getSchedulerWidth();
     let resourceTableWidth = this.isResourceViewResponsive()
       ? parseInt(
-          (schedulerWidth * Number(resourceTableConfigWidth.slice(0, -1))) /
-            100,
-          10
-        )
+        (schedulerWidth * Number(resourceTableConfigWidth.slice(0, -1)))
+            / 100,
+        10,
+      )
       : resourceTableConfigWidth;
     if (
-      this.isSchedulerResponsive() &&
-      this.getContentTableWidth() + resourceTableWidth < schedulerWidth
-    )
-      resourceTableWidth = schedulerWidth - this.getContentTableWidth();
+      this.isSchedulerResponsive()
+      && this.getContentTableWidth() + resourceTableWidth < schedulerWidth
+    ) resourceTableWidth = schedulerWidth - this.getContentTableWidth();
     return resourceTableWidth;
   }
 
@@ -360,9 +355,9 @@ export default class SchedulerData {
     const schedulerWidth = this.getSchedulerWidth();
     return this.isContentViewResponsive()
       ? parseInt(
-          (schedulerWidth * Number(contentCellConfigWidth.slice(0, -1))) / 100,
-          10
-        )
+        (schedulerWidth * Number(contentCellConfigWidth.slice(0, -1))) / 100,
+        10,
+      )
       : contentCellConfigWidth;
   }
 
@@ -371,8 +366,7 @@ export default class SchedulerData {
   }
 
   getScrollToSpecialDayjs() {
-    if (this.config.scrollToSpecialDayjsEnabled)
-      return this.scrollToSpecialDayjs;
+    if (this.config.scrollToSpecialDayjsEnabled) return this.scrollToSpecialDayjs;
     return false;
   }
 
@@ -383,7 +377,7 @@ export default class SchedulerData {
   getSlotById(slotId) {
     const slots = this.getSlots();
     let slot;
-    slots.forEach((item) => {
+    slots.forEach(item => {
       if (item.id === slotId) slot = item;
     });
     return slot;
@@ -391,7 +385,7 @@ export default class SchedulerData {
 
   getResourceById(resourceId) {
     let resource;
-    this.resources.forEach((item) => {
+    this.resources.forEach(item => {
       if (item.id === resourceId) resource = item;
     });
     return resource;
@@ -403,7 +397,7 @@ export default class SchedulerData {
 
   getSchedulerContentDesiredHeight() {
     let height = 0;
-    this.renderData.forEach((item) => {
+    this.renderData.forEach(item => {
       if (item.render) height += item.rowHeight;
     });
     return height;
@@ -411,14 +405,14 @@ export default class SchedulerData {
 
   getCellMaxEvents() {
     const viewConfigMap = {
-      [ViewType.Week]: "weekMaxEvents",
-      [ViewType.Day]: "dayMaxEvents",
-      [ViewType.Month]: "monthMaxEvents",
-      [ViewType.Year]: "yearMaxEvents",
-      [ViewType.Quarter]: "quarterMaxEvents",
+      [ViewType.Week]: 'weekMaxEvents',
+      [ViewType.Day]: 'dayMaxEvents',
+      [ViewType.Month]: 'monthMaxEvents',
+      [ViewType.Year]: 'yearMaxEvents',
+      [ViewType.Quarter]: 'quarterMaxEvents',
     };
 
-    const configProperty = viewConfigMap[this.viewType] || "customMaxEvents";
+    const configProperty = viewConfigMap[this.viewType] || 'customMaxEvents';
 
     return this.config[configProperty];
   }
@@ -449,17 +443,18 @@ export default class SchedulerData {
   getDateLabel() {
     const start = this.localeDayjs(new Date(this.startDate));
     const end = this.localeDayjs(new Date(this.endDate));
-    let dateLabel = start.format("LL");
+    let dateLabel = start.format('LL');
 
-    if (start !== end) dateLabel = `${start.format("LL")}-${end.format("LL")}`;
+    if (start !== end) dateLabel = `${start.format('LL')}-${end.format('LL')}`;
 
-    if (this.behaviors.getDateLabelFunc)
+    if (this.behaviors.getDateLabelFunc) {
       dateLabel = this.behaviors.getDateLabelFunc(
         this,
         this.viewType,
         this.startDate,
-        this.endDate
+        this.endDate,
       );
+    }
 
     return dateLabel;
   }
@@ -576,29 +571,28 @@ export default class SchedulerData {
     }
 
     const viewConfigMap = {
-      [ViewType.Week]: "weekResourceTableWidth",
-      [ViewType.Day]: "dayResourceTableWidth",
-      [ViewType.Month]: "monthResourceTableWidth",
-      [ViewType.Year]: "yearResourceTableWidth",
-      [ViewType.Quarter]: "quarterResourceTableWidth",
+      [ViewType.Week]: 'weekResourceTableWidth',
+      [ViewType.Day]: 'dayResourceTableWidth',
+      [ViewType.Month]: 'monthResourceTableWidth',
+      [ViewType.Year]: 'yearResourceTableWidth',
+      [ViewType.Quarter]: 'quarterResourceTableWidth',
     };
 
-    const configProperty =
-      viewConfigMap[this.viewType] || "customResourceTableWidth";
+    const configProperty = viewConfigMap[this.viewType] || 'customResourceTableWidth';
 
     return this.config[configProperty];
   }
 
   getContentCellConfigWidth() {
     const viewConfigMap = {
-      [ViewType.Week]: "weekCellWidth",
-      [ViewType.Day]: "dayCellWidth",
-      [ViewType.Month]: "monthCellWidth",
-      [ViewType.Year]: "yearCellWidth",
-      [ViewType.Quarter]: "quarterCellWidth",
+      [ViewType.Week]: 'weekCellWidth',
+      [ViewType.Day]: 'dayCellWidth',
+      [ViewType.Month]: 'monthCellWidth',
+      [ViewType.Year]: 'yearCellWidth',
+      [ViewType.Quarter]: 'quarterCellWidth',
     };
 
-    const configProperty = viewConfigMap[this.viewType] || "customCellWidth";
+    const configProperty = viewConfigMap[this.viewType] || 'customCellWidth';
 
     return this.config[configProperty];
   }
@@ -625,14 +619,14 @@ export default class SchedulerData {
   }
 
   _handleRecurringEvents() {
-    const recurringEvents = this.events.filter((x) => !!x.rrule);
-    recurringEvents.forEach((item) => {
+    const recurringEvents = this.events.filter(x => !!x.rrule);
+    recurringEvents.forEach(item => {
       this._detachEvent(item);
     });
 
-    recurringEvents.forEach((item) => {
+    recurringEvents.forEach(item => {
       const windowStart = this.startDate;
-      const windowEnd = this.endDate.add(1, "days");
+      const windowEnd = this.endDate.add(1, 'days');
       const oldStart = this.localeDayjs(new Date(item.start));
       const oldEnd = this.localeDayjs(new Date(item.end));
       let rule = rrulestr(item.rrule);
@@ -655,7 +649,7 @@ export default class SchedulerData {
           rruleSet.exrule(rrulestr(item.exrule));
         }
         if (item.exdates) {
-          item.exdates.forEach((exdate) => {
+          item.exdates.forEach(exdate => {
             rruleSet.exdate(this.localeDayjs(exdate).toDate());
           });
         }
@@ -672,24 +666,24 @@ export default class SchedulerData {
           id: `${item.id}-${index}`,
           start: rule.origOptions.tzid
             ? this.localeDayjs
-                .utc(time)
-                .utcOffset(this.localeDayjs(new Date()).utcOffset(), true)
-                .format(DATETIME_FORMAT)
+              .utc(time)
+              .utcOffset(this.localeDayjs(new Date()).utcOffset(), true)
+              .format(DATETIME_FORMAT)
             : this.localeDayjs(new Date(time)).format(DATETIME_FORMAT),
           end: rule.origOptions.tzid
             ? this.localeDayjs
-                .utc(time)
-                .utcOffset(this.localeDayjs(new Date()).utcOffset(), true)
-                .add(oldEnd.diff(oldStart), "ms")
-                .add(
-                  this.localeDayjs(new Date(oldUntil)).utcOffset() -
-                    this.localeDayjs(new Date(item.start)).utcOffset(),
-                  "m"
-                )
-                .format(DATETIME_FORMAT)
+              .utc(time)
+              .utcOffset(this.localeDayjs(new Date()).utcOffset(), true)
+              .add(oldEnd.diff(oldStart), 'ms')
+              .add(
+                this.localeDayjs(new Date(oldUntil)).utcOffset()
+                    - this.localeDayjs(new Date(item.start)).utcOffset(),
+                'm',
+              )
+              .format(DATETIME_FORMAT)
             : this.localeDayjs(new Date(time))
-                .add(oldEnd.diff(oldStart), "ms")
-                .format(DATETIME_FORMAT),
+              .add(oldEnd.diff(oldStart), 'ms')
+              .format(DATETIME_FORMAT),
         };
 
         const eventStart = this.localeDayjs(newEvent.start);
@@ -699,9 +693,9 @@ export default class SchedulerData {
             eventStart,
             eventEnd,
             windowStart,
-            windowEnd
-          ) &&
-          (!oldDtstart || eventStart >= oldDtstart)
+            windowEnd,
+          )
+          && (!oldDtstart || eventStart >= oldDtstart)
         ) {
           this._attachEvent(newEvent);
         }
@@ -714,37 +708,35 @@ export default class SchedulerData {
       this.selectDate = this.localeDayjs(date);
     }
 
-    const setStartAndEndDates = (unit) => {
-      this.startDate =
-        date !== undefined
-          ? this.selectDate.startOf(unit)
-          : this.startDate.add(num, `${unit}s`);
+    const setStartAndEndDates = unit => {
+      this.startDate = date !== undefined
+        ? this.selectDate.startOf(unit)
+        : this.startDate.add(num, `${unit}s`);
       this.endDate = this.startDate.endOf(unit);
     };
 
     switch (this.viewType) {
       case ViewType.Week:
-        setStartAndEndDates("week");
+        setStartAndEndDates('week');
         break;
 
       case ViewType.Day:
-        this.startDate =
-          date !== undefined
-            ? this.selectDate
-            : this.startDate.add(num, "days");
+        this.startDate = date !== undefined
+          ? this.selectDate
+          : this.startDate.add(num, 'days');
         this.endDate = this.startDate;
         break;
 
       case ViewType.Month:
-        setStartAndEndDates("month");
+        setStartAndEndDates('month');
         break;
 
       case ViewType.Quarter:
-        setStartAndEndDates("quarter");
+        setStartAndEndDates('quarter');
         break;
 
       case ViewType.Year:
-        setStartAndEndDates("year");
+        setStartAndEndDates('year');
         break;
 
       case ViewType.Custom:
@@ -759,7 +751,7 @@ export default class SchedulerData {
           }
         } else {
           throw new Error(
-            "This is a custom view type, set behaviors.getCustomDateFunc func to resolve the time window (startDate and endDate) yourself"
+            'This is a custom view type, set behaviors.getCustomDateFunc func to resolve the time window (startDate and endDate) yourself',
           );
         }
         break;
@@ -783,10 +775,10 @@ export default class SchedulerData {
       });
     } else if (this.cellUnit === CellUnit.Hour) {
       if (start.hour() === 0) {
-        start = start.add(this.config.dayStartFrom, "hours");
+        start = start.add(this.config.dayStartFrom, 'hours');
       }
       if (end.hour() === 0) {
-        end = end.add(this.config.dayStopTo, "hours");
+        end = end.add(this.config.dayStopTo, 'hours');
       }
       header = start;
 
@@ -794,7 +786,7 @@ export default class SchedulerData {
       while (header >= start && header <= end) {
         // prevent doubled hours on time change
         if (header.hour() === prevHour) {
-          header = header.add(1, "hours");
+          header = header.add(1, 'hours');
           // eslint-disable-next-line no-continue
           continue;
         }
@@ -803,18 +795,18 @@ export default class SchedulerData {
         for (let i = 0; i < minuteSteps; i += 1) {
           const hour = header.hour();
           if (
-            hour >= this.config.dayStartFrom &&
-            hour <= this.config.dayStopTo
+            hour >= this.config.dayStartFrom
+            && hour <= this.config.dayStopTo
           ) {
             const time = header.format(DATETIME_FORMAT);
             const nonWorkingTime = this.behaviors.isNonWorkingTimeFunc(
               this,
-              time
+              time,
             );
             headers.push({ time, nonWorkingTime });
           }
 
-          header = header.add(this.config.minuteStep, "minutes");
+          header = header.add(this.config.minuteStep, 'minutes');
         }
       }
     } else if (this.cellUnit === CellUnit.Day) {
@@ -822,35 +814,35 @@ export default class SchedulerData {
         const time = header.format(DATETIME_FORMAT);
         const dayOfWeek = header.day();
         if (
-          this.config.displayWeekend ||
-          (dayOfWeek !== 0 && dayOfWeek !== 6)
+          this.config.displayWeekend
+          || (dayOfWeek !== 0 && dayOfWeek !== 6)
         ) {
           const nonWorkingTime = this.behaviors.isNonWorkingTimeFunc(
             this,
-            time
+            time,
           );
           headers.push({ time, nonWorkingTime });
         }
 
-        header = header.add(1, "days");
+        header = header.add(1, 'days');
       }
     } else if (this.cellUnit === CellUnit.Week) {
       while (header >= start && header <= end) {
         const time = header.format(DATE_FORMAT);
         headers.push({ time });
-        header = header.add(1, "weeks").startOf("week");
+        header = header.add(1, 'weeks').startOf('week');
       }
     } else if (this.cellUnit === CellUnit.Month) {
       while (header >= start && header <= end) {
         const time = header.format(DATE_FORMAT);
         headers.push({ time });
-        header = header.add(1, "months").startOf("month");
+        header = header.add(1, 'months').startOf('month');
       }
     } else if (this.cellUnit === CellUnit.Year) {
       while (header >= start && header <= end) {
         const time = header.format(DATE_FORMAT);
         headers.push({ time });
-        header = header.add(1, "years").startOf("year");
+        header = header.add(1, 'years').startOf('year');
       }
     }
 
@@ -911,42 +903,40 @@ export default class SchedulerData {
 
     let endValue;
     if (this.showAgenda) {
-      const incrementUnit =
-        {
-          [ViewType.Day]: "days",
-          [ViewType.Week]: "weeks",
-          [ViewType.Month]: "months",
-          [ViewType.Year]: "years",
-          [ViewType.Quarter]: "quarters",
-        }[this.viewType] || "days";
+      const incrementUnit = {
+        [ViewType.Day]: 'days',
+        [ViewType.Week]: 'weeks',
+        [ViewType.Month]: 'months',
+        [ViewType.Year]: 'years',
+        [ViewType.Quarter]: 'quarters',
+      }[this.viewType] || 'days';
 
-      if (incrementUnit === "days") {
+      if (incrementUnit === 'days') {
         endValue = this.localeDayjs(new Date(this.endDate))
-          .add(1, "days")
+          .add(1, 'days')
           .format(DATETIME_FORMAT);
       } else {
         endValue = start.add(1, incrementUnit).format(DATETIME_FORMAT);
       }
     } else {
-      const incrementUnit =
-        {
-          [CellUnit.Hour]: "minutes",
-          [CellUnit.Week]: "weeks",
-          [CellUnit.Month]: "months",
-          [CellUnit.Year]: "years",
-        }[this.cellUnit] || "days";
+      const incrementUnit = {
+        [CellUnit.Hour]: 'minutes',
+        [CellUnit.Week]: 'weeks',
+        [CellUnit.Month]: 'months',
+        [CellUnit.Year]: 'years',
+      }[this.cellUnit] || 'days';
 
       endValue = start
         .add(
-          incrementUnit === "minutes" ? this.config.minuteStep : 1,
-          incrementUnit
+          incrementUnit === 'minutes' ? this.config.minuteStep : 1,
+          incrementUnit,
         )
         .format(
-          this.cellUnit === CellUnit.Year ||
-            this.cellUnit === CellUnit.Month ||
-            this.cellUnit === CellUnit.Week
+          this.cellUnit === CellUnit.Year
+            || this.cellUnit === CellUnit.Month
+            || this.cellUnit === CellUnit.Week
             ? DATE_FORMAT
-            : DATETIME_FORMAT
+            : DATETIME_FORMAT,
         );
     }
 
@@ -983,7 +973,7 @@ export default class SchedulerData {
   _generateEventGroups() {
     const eventGroups = [];
     const set = new Set();
-    this.events.forEach((item) => {
+    this.events.forEach(item => {
       const groupId = this._getEventGroupId(item);
       const groupName = this._getEventGroupName(item);
 
@@ -1003,10 +993,8 @@ export default class SchedulerData {
     const slots = isEventPerspective ? eventGroups : resources;
     const slotTree = [];
     const slotMap = new Map();
-    slots.forEach((slot) => {
-      const headerEvents = headers.map((header) =>
-        this._createInitHeaderEvents(header)
-      );
+    slots.forEach(slot => {
+      const headerEvents = headers.map(header => this._createInitHeaderEvents(header));
 
       const slotRenderData = {
         slotId: slot.id,
@@ -1095,10 +1083,10 @@ export default class SchedulerData {
     // }
 
     const timeBetween = (date1, date2, timeIn) => {
-      if (timeIn === "days" || timeIn === "day") {
+      if (timeIn === 'days' || timeIn === 'day') {
         if (
-          date1.getDate() === date2.getDate() &&
-          date1.getMonth() === date2.getMonth()
+          date1.getDate() === date2.getDate()
+          && date1.getMonth() === date2.getMonth()
         ) {
           return 1;
         }
@@ -1106,12 +1094,12 @@ export default class SchedulerData {
 
       let one;
       switch (timeIn) {
-        case "days":
-        case "day":
+        case 'days':
+        case 'day':
           one = 1000 * 60 * 60 * 24;
           break;
-        case "minutes":
-        case "minute":
+        case 'minutes':
+        case 'minute':
           one = 1000 * 60;
           break;
         default:
@@ -1138,68 +1126,67 @@ export default class SchedulerData {
       if (headers.length > 0) {
         const day = new Date(headers[0].time);
         if (
-          day.getDate() > eventStart.getDate() &&
-          day.getDate() < eventEnd.getDate()
+          day.getDate() > eventStart.getDate()
+          && day.getDate() < eventEnd.getDate()
         ) {
           span = 1440 / this.config.minuteStep;
         } else if (
-          day.getDate() > eventStart.getDate() &&
-          day.getDate() === eventEnd.getDate()
+          day.getDate() > eventStart.getDate()
+          && day.getDate() === eventEnd.getDate()
         ) {
           span = Math.ceil(
-            timeBetween(day, eventEnd, "minutes") / this.config.minuteStep
+            timeBetween(day, eventEnd, 'minutes') / this.config.minuteStep,
           );
         } else if (
-          day.getDate() === eventStart.getDate() &&
-          day.getDate() < eventEnd.getDate()
+          day.getDate() === eventStart.getDate()
+          && day.getDate() < eventEnd.getDate()
         ) {
           day.setHours(23, 59, 59);
           span = Math.ceil(
-            timeBetween(eventStart, day, "minutes") / this.config.minuteStep
+            timeBetween(eventStart, day, 'minutes') / this.config.minuteStep,
           );
         } else if (
-          (day.getDate() === eventStart.getDate() &&
-            day.getDate() === eventEnd.getDate()) ||
-          eventEnd.getDate() === eventStart.getDate()
+          (day.getDate() === eventStart.getDate()
+            && day.getDate() === eventEnd.getDate())
+          || eventEnd.getDate() === eventStart.getDate()
         ) {
           span = Math.ceil(
-            timeBetween(eventStart, eventEnd, "minutes") /
-              this.config.minuteStep
+            timeBetween(eventStart, eventEnd, 'minutes')
+              / this.config.minuteStep,
           );
         }
       }
     } else if (
-      this.viewType === ViewType.Week ||
-      this.viewType === ViewType.Month ||
-      this.viewType === ViewType.Quarter ||
-      this.viewType === ViewType.Year
+      this.viewType === ViewType.Week
+      || this.viewType === ViewType.Month
+      || this.viewType === ViewType.Quarter
+      || this.viewType === ViewType.Year
     ) {
       const startDate = windowStart < eventStart ? eventStart : windowStart;
       const endDate = windowEnd > eventEnd ? eventEnd : windowEnd;
       const adjust = windowStart < eventStart ? 0 : -1;
-      span = Math.ceil(timeBetween(startDate, endDate, "days"));
-      span = span + adjust;
+      span = Math.ceil(timeBetween(startDate, endDate, 'days'));
+      span += adjust;
     } else {
       if (this.cellUnit === CellUnit.Day) {
         eventEnd.setHours(23, 59, 59);
         eventStart.setHours(0, 0, 0, 0);
       }
 
-      const timeIn = this.cellUnit === CellUnit.Day ? "days" : "minutes";
-      const dividedBy =
-        this.cellUnit === CellUnit.Day ? 1 : this.config.minuteStep;
+      const timeIn = this.cellUnit === CellUnit.Day ? 'days' : 'minutes';
+      const dividedBy = this.cellUnit === CellUnit.Day ? 1 : this.config.minuteStep;
 
       if (windowStart >= eventStart && eventEnd <= windowEnd) {
         span = Math.ceil(
-          timeBetween(windowStart, eventEnd, timeIn) / dividedBy
+          timeBetween(windowStart, eventEnd, timeIn) / dividedBy,
         );
       } else if (windowStart > eventStart && eventEnd > windowEnd) {
         span = Math.ceil(
-          timeBetween(windowStart, windowEnd, timeIn) / dividedBy
+          timeBetween(windowStart, windowEnd, timeIn) / dividedBy,
         );
       } else if (windowStart <= eventStart && eventEnd >= windowEnd) {
         span = Math.ceil(
-          timeBetween(eventStart, windowEnd, timeIn) / dividedBy
+          timeBetween(eventStart, windowEnd, timeIn) / dividedBy,
         );
       } else {
         span = Math.ceil(timeBetween(eventStart, eventEnd, timeIn) / dividedBy);
@@ -1210,8 +1197,8 @@ export default class SchedulerData {
   }
 
   _validateResource(resources) {
-    if (Object.prototype.toString.call(resources) !== "[object Array]") {
-      throw new Error("Resources should be Array object");
+    if (Object.prototype.toString.call(resources) !== '[object Array]') {
+      throw new Error('Resources should be Array object');
     }
 
     resources.forEach((item, index) => {
@@ -1220,15 +1207,15 @@ export default class SchedulerData {
         throw new Error(`Resource undefined: ${index}`);
       }
       if (item.id === undefined || item.name === undefined) {
-        console.error("Resource property missed", index, item);
+        console.error('Resource property missed', index, item);
         throw new Error(`Resource property undefined: ${index}`);
       }
     });
   }
 
   _validateEventGroups(eventGroups) {
-    if (Object.prototype.toString.call(eventGroups) !== "[object Array]") {
-      throw new Error("Event groups should be Array object");
+    if (Object.prototype.toString.call(eventGroups) !== '[object Array]') {
+      throw new Error('Event groups should be Array object');
     }
 
     eventGroups.forEach((item, index) => {
@@ -1237,15 +1224,15 @@ export default class SchedulerData {
         throw new Error(`Event group undefined: ${index}`);
       }
       if (item.id === undefined || item.name === undefined) {
-        console.error("Event group property missed", index, item);
+        console.error('Event group property missed', index, item);
         throw new Error(`Event group property undefined: ${index}`);
       }
     });
   }
 
   _validateEvents(events) {
-    if (Object.prototype.toString.call(events) !== "[object Array]") {
-      throw new Error("Events should be Array object");
+    if (Object.prototype.toString.call(events) !== '[object Array]') {
+      throw new Error('Events should be Array object');
     }
 
     events.forEach((e, index) => {
@@ -1254,13 +1241,13 @@ export default class SchedulerData {
         throw new Error(`Event undefined: ${index}`);
       }
       if (
-        e.id === undefined ||
-        e.resourceId === undefined ||
-        e.title === undefined ||
-        e.start === undefined ||
-        e.end === undefined
+        e.id === undefined
+        || e.resourceId === undefined
+        || e.title === undefined
+        || e.start === undefined
+        || e.end === undefined
       ) {
-        console.error("Event property missed", index, e);
+        console.error('Event property missed', index, e);
         throw new Error(`Event property undefined: ${index}`);
       }
     });
@@ -1269,10 +1256,10 @@ export default class SchedulerData {
   _validateMinuteStep(minuteStep) {
     if (60 % minuteStep !== 0) {
       console.error(
-        "Minute step is not set properly - 60 minutes must be divisible without remainder by this number"
+        'Minute step is not set properly - 60 minutes must be divisible without remainder by this number',
       );
       throw new Error(
-        "Minute step is not set properly - 60 minutes must be divisible without remainder by this number"
+        'Minute step is not set properly - 60 minutes must be divisible without remainder by this number',
       );
     }
   }
@@ -1294,15 +1281,15 @@ export default class SchedulerData {
       this.isEventPerspective,
       this.eventGroups,
       this.resources,
-      this.headers
+      this.headers,
     );
     // this.events.sort(this._compare);
     const cellMaxEventsCount = this.getCellMaxEvents();
     const cellMaxEventsCountValue = 30;
 
-    this.events.forEach((item) => {
+    this.events.forEach(item => {
       const resourceEventsList = initRenderData.filter(
-        (x) => x.slotId === this._getEventSlotId(item)
+        x => x.slotId === this._getEventSlotId(item),
       );
       if (resourceEventsList.length > 0) {
         const resourceEvents = resourceEventsList[0];
@@ -1318,18 +1305,15 @@ export default class SchedulerData {
             header.count += 1;
             if (header.count > resourceEvents.rowMaxCount) {
               resourceEvents.rowMaxCount = header.count;
-              const rowsCount =
-                cellMaxEventsCount <= cellMaxEventsCountValue &&
-                resourceEvents.rowMaxCount > cellMaxEventsCount
-                  ? cellMaxEventsCount
-                  : resourceEvents.rowMaxCount;
-              const newRowHeight =
-                rowsCount * this.config.eventItemLineHeight +
-                (this.config.creatable && this.config.checkConflict === false
+              const rowsCount = cellMaxEventsCount <= cellMaxEventsCountValue
+                && resourceEvents.rowMaxCount > cellMaxEventsCount
+                ? cellMaxEventsCount
+                : resourceEvents.rowMaxCount;
+              const newRowHeight = rowsCount * this.config.eventItemLineHeight
+                + (this.config.creatable && this.config.checkConflict === false
                   ? 20
                   : 2);
-              if (newRowHeight > resourceEvents.rowHeight)
-                resourceEvents.rowHeight = newRowHeight;
+              if (newRowHeight > resourceEvents.rowHeight) resourceEvents.rowHeight = newRowHeight;
             }
 
             if (pos === -1) {
@@ -1344,18 +1328,16 @@ export default class SchedulerData {
               const previousHeaderStart = new Date(previousHeader.start);
               const previousHeaderEnd = new Date(previousHeader.end);
               if (
-                previousHeaderEnd <= eventStart ||
-                previousHeaderStart >= eventEnd
-              )
-                render = true;
+                previousHeaderEnd <= eventStart
+                || previousHeaderStart >= eventEnd
+              ) render = true;
             }
             if (
-              this.viewType === ViewType.Week ||
-              this.viewType === ViewType.Month ||
-              this.viewType === ViewType.Quarter ||
-              this.viewType === ViewType.Year
-            )
-              if (headerStart.getDate() == eventEnd.getDate()) render = false;
+              this.viewType === ViewType.Week
+              || this.viewType === ViewType.Month
+              || this.viewType === ViewType.Quarter
+              || this.viewType === ViewType.Year
+            ) if (headerStart.getDate() === eventEnd.getDate()) render = false;
             // console.log(`span: ${span}`)
             header.events[pos] = this._createHeaderEvent(render, span, item);
           }
@@ -1364,13 +1346,13 @@ export default class SchedulerData {
     });
 
     if (
-      cellMaxEventsCount <= cellMaxEventsCountValue ||
-      this.behaviors.getSummaryFunc !== undefined
+      cellMaxEventsCount <= cellMaxEventsCountValue
+      || this.behaviors.getSummaryFunc !== undefined
     ) {
-      initRenderData.forEach((resourceEvents) => {
+      initRenderData.forEach(resourceEvents => {
         let hasSummary = false;
 
-        resourceEvents.headerItems.forEach((headerItem) => {
+        resourceEvents.headerItems.forEach(headerItem => {
           if (cellMaxEventsCount <= cellMaxEventsCountValue) {
             let renderItemsCount = 0;
             let addMoreIndex = 0;
@@ -1397,7 +1379,7 @@ export default class SchedulerData {
 
           if (this.behaviors.getSummaryFunc !== undefined) {
             const events = [];
-            headerItem.events.forEach((e) => {
+            headerItem.events.forEach(e => {
               if (!!e && !!e.eventItem) events.push(e.eventItem);
             });
 
@@ -1407,27 +1389,23 @@ export default class SchedulerData {
               resourceEvents.slotId,
               resourceEvents.slotName,
               headerItem.start,
-              headerItem.end
+              headerItem.end,
             );
-            if (!!headerItem.summary && headerItem.summary.text !== undefined)
-              hasSummary = true;
+            if (!!headerItem.summary && headerItem.summary.text !== undefined) hasSummary = true;
           }
         });
 
         resourceEvents.hasSummary = hasSummary;
         if (hasSummary) {
-          const rowsCount =
-            cellMaxEventsCount <= cellMaxEventsCountValue &&
-            resourceEvents.rowMaxCount > cellMaxEventsCount
-              ? cellMaxEventsCount
-              : resourceEvents.rowMaxCount;
-          const newRowHeight =
-            (rowsCount + 1) * this.config.eventItemLineHeight +
-            (this.config.creatable && this.config.checkConflict === false
+          const rowsCount = cellMaxEventsCount <= cellMaxEventsCountValue
+            && resourceEvents.rowMaxCount > cellMaxEventsCount
+            ? cellMaxEventsCount
+            : resourceEvents.rowMaxCount;
+          const newRowHeight = (rowsCount + 1) * this.config.eventItemLineHeight
+            + (this.config.creatable && this.config.checkConflict === false
               ? 20
               : 2);
-          if (newRowHeight > resourceEvents.rowHeight)
-            resourceEvents.rowHeight = newRowHeight;
+          if (newRowHeight > resourceEvents.rowHeight) resourceEvents.rowHeight = newRowHeight;
         }
       });
     }

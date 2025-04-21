@@ -24,10 +24,10 @@ Unlock the potential of your React projects with react-big-schedule and revoluti
 
 ## Installation
 
-To install react-big-schedule, use npm:
+To install react-big-schedule-fairshare, use npm:
 
 ```bash
-  npm install react-big-schedule
+  npm install react-big-schedule-fairshare
 ```
 
 ## Tech Stack
@@ -106,19 +106,19 @@ Please refer to the [CHANGELOG.md](https://github.com/react-scheduler/react-big-
 1.) Installation
 
 ```
-  npm i react-big-schedule
+  npm i react-big-schedule-fairshare
 ```
 
 or
 
 ```
-  yarn add react-big-schedule
+  yarn add react-big-schedule-fairshare
 ```
 
 2.) Import dependencies
 
 ```
-import { Scheduler, SchedulerData, ViewType, DATE_FORMAT } from "react-big-schedule";
+import { Scheduler, SchedulerData, ViewType, DATE_FORMAT } from "react-big-schedule-fairshare";
 import dayjs from "dayjs";
 import "react-big-schedule/dist/css/style.css";
 ```
@@ -126,18 +126,21 @@ import "react-big-schedule/dist/css/style.css";
 3.) Basic Usage
 
 ```js
-const schedulerData = new SchedulerData(new dayjs().format(DATE_FORMAT), ViewType.Week);
+const schedulerData = new SchedulerData(
+  new dayjs().format(DATE_FORMAT),
+  ViewType.Week
+);
 
 //set locale dayjs to the schedulerData, if your locale isn't English. By default, Scheduler comes with English(en, United States).
-schedulerData.setSchedulerLocale('pt-br'); // this uses dayjs, but it doesn't require dayjs to be installed as its called dynamically
-schedulerData.setCalendarPopoverLocale('pt_BR'); // this uses antd [List of supported locales](https://ant.design/docs/react/i18n#supported-languages)
+schedulerData.setSchedulerLocale("pt-br"); // this uses dayjs, but it doesn't require dayjs to be installed as its called dynamically
+schedulerData.setCalendarPopoverLocale("pt_BR"); // this uses antd [List of supported locales](https://ant.design/docs/react/i18n#supported-languages)
 
 schedulerData.setResources([
-  { id: 'r0', name: 'Resource0', groupOnly: true },
-  { id: 'r1', name: 'Resource1' },
-  { id: 'r2', name: 'Resource2', parentId: 'r0' },
-  { id: 'r3', name: 'Resource3', parentId: 'r4' },
-  { id: 'r4', name: 'Resource4', parentId: 'r2' },
+  { id: "r0", name: "Resource0", groupOnly: true },
+  { id: "r1", name: "Resource1" },
+  { id: "r2", name: "Resource2", parentId: "r0" },
+  { id: "r3", name: "Resource3", parentId: "r4" },
+  { id: "r4", name: "Resource4", parentId: "r2" },
 ]);
 
 // the event array should be sorted in ascending order by event.start property
@@ -145,44 +148,44 @@ schedulerData.setResources([
 schedulerData.setEvents([
   {
     id: 1,
-    start: '2022-12-18 09:30:00',
-    end: '2022-12-19 23:30:00',
-    resourceId: 'r1',
-    title: 'I am finished',
-    bgColor: '#D9D9D9',
+    start: "2022-12-18 09:30:00",
+    end: "2022-12-19 23:30:00",
+    resourceId: "r1",
+    title: "I am finished",
+    bgColor: "#D9D9D9",
   },
   {
     id: 2,
-    start: '2022-12-18 12:30:00',
-    end: '2022-12-26 23:30:00',
-    resourceId: 'r2',
-    title: 'I am not resizable',
+    start: "2022-12-18 12:30:00",
+    end: "2022-12-26 23:30:00",
+    resourceId: "r2",
+    title: "I am not resizable",
     resizable: false,
   },
   {
     id: 3,
-    start: '2022-12-19 12:30:00',
-    end: '2022-12-20 23:30:00',
-    resourceId: 'r3',
-    title: 'I am not movable',
+    start: "2022-12-19 12:30:00",
+    end: "2022-12-20 23:30:00",
+    resourceId: "r3",
+    title: "I am not movable",
     movable: false,
   },
   {
     id: 4,
-    start: '2022-12-19 14:30:00',
-    end: '2022-12-20 23:30:00',
-    resourceId: 'r1',
-    title: 'I am not start-resizable',
+    start: "2022-12-19 14:30:00",
+    end: "2022-12-20 23:30:00",
+    resourceId: "r1",
+    title: "I am not start-resizable",
     startResizable: false,
   },
   {
     id: 5,
-    start: '2022-12-19 15:30:00',
-    end: '2022-12-20 23:30:00',
-    resourceId: 'r2',
-    title: 'R2 has recurring tasks every week on Tuesday, Friday',
-    rrule: 'FREQ=WEEKLY;DTSTART=20221219T013000Z;BYDAY=TU,FR',
-    bgColor: '#f759ab',
+    start: "2022-12-19 15:30:00",
+    end: "2022-12-20 23:30:00",
+    resourceId: "r2",
+    title: "R2 has recurring tasks every week on Tuesday, Friday",
+    rrule: "FREQ=WEEKLY;DTSTART=20221219T013000Z;BYDAY=TU,FR",
+    bgColor: "#f759ab",
   },
 ]);
 
@@ -262,7 +265,7 @@ Used to set locale to the scheduler, it uses dayjs locales ([List of supported l
 #### example:
 
 ```js
-import * as dayjsLocale from 'dayjs/locale/pt-br';
+import * as dayjsLocale from "dayjs/locale/pt-br";
 
 setSchedulerLocale(dayjsLocale);
 ```
@@ -280,7 +283,7 @@ Used to set locale to the calendar popover. it uses antd locales ([List of suppo
 #### example:
 
 ```js
-import * as antdLocale from 'antd/locale/pt_BR';
+import * as antdLocale from "antd/locale/pt_BR";
 
 setCalendarPopoverLocale(antdLocale);
 ```
@@ -336,7 +339,11 @@ Let the time window jump to the provided `date` directly. `SchedulerData.events`
 #### setViewType
 
 ```js
-setViewType((viewType = ViewType.Week), (showAgenda = false), (isEventPerspective = false));
+setViewType(
+  (viewType = ViewType.Week),
+  (showAgenda = false),
+  (isEventPerspective = false)
+);
 ```
 
 Tell SchedulerData to change current view, the `viewType`, `showAgenda` and `isEventPerspective` group should be
@@ -762,7 +769,14 @@ Method that defines non-working time.
 #### getSummaryFunc
 
 ```js
-getSummary(schedulerData, headerEvents, slotId, slotName, headerStart, headerEnd);
+getSummary(
+  schedulerData,
+  headerEvents,
+  slotId,
+  slotName,
+  headerStart,
+  headerEnd
+);
 ```
 
 Method that defines the summary text displayed in the Scheduler cells.Refer
@@ -912,7 +926,16 @@ to [this example](https://stephenchou1017.github.io/scheduler/#/customheader).
 
 ```js
 conflictOccurred: PropTypes.func;
-conflictOccurred(schedulerData, action, event, type, slotId, slotName, start, end);
+conflictOccurred(
+  schedulerData,
+  action,
+  event,
+  type,
+  slotId,
+  slotName,
+  start,
+  end
+);
 ```
 
 Callback function fired when there is a conflict. This could happen when creating, resizing or moving an event, and when  
@@ -922,7 +945,16 @@ Callback function fired when there is a conflict. This could happen when creatin
 
 ```js
 eventItemTemplateResolver: PropTypes.func;
-eventItemTemplateResolver(schedulerData, event, bgColor, isStart, isEnd, mustAddCssClass, mustBeHeight, agendaMaxEventWidth);
+eventItemTemplateResolver(
+  schedulerData,
+  event,
+  bgColor,
+  isStart,
+  isEnd,
+  mustAddCssClass,
+  mustBeHeight,
+  agendaMaxEventWidth
+);
 ```
 
 Use this function, you can customize the event style. Refer to [this example](https://stephenchou1017.github.io/scheduler/#/customeventstyle).
@@ -931,7 +963,14 @@ Use this function, you can customize the event style. Refer to [this example](ht
 
 ```js
 eventItemPopoverTemplateResolver: PropTypes.func;
-eventItemPopoverTemplateResolver(schedulerData, eventItem, title, start, end, statusColor);
+eventItemPopoverTemplateResolver(
+  schedulerData,
+  eventItem,
+  title,
+  start,
+  end,
+  statusColor
+);
 ```
 
 Use this function, you can customize the event's popover style. Refer to [this example](https://stephenchou1017.github.io/scheduler/#/custompopover).
@@ -949,7 +988,12 @@ Use this function, you can customize the left slot style.
 
 ```js
 nonAgendaCellHeaderTemplateResolver: PropTypes.func;
-nonAgendaCellHeaderTemplateResolver(schedulerData, item, formattedDateItems, style);
+nonAgendaCellHeaderTemplateResolver(
+  schedulerData,
+  item,
+  formattedDateItems,
+  style
+);
 ```
 
 Use this function, you can customize the table header cell style. Refer to [this example](https://stephenchou1017.github.io/scheduler/#/customtableheaders).
