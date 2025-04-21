@@ -1176,7 +1176,9 @@ export default class SchedulerData {
     ) {
       const startDate = windowStart < eventStart ? eventStart : windowStart;
       const endDate = windowEnd > eventEnd ? eventEnd : windowEnd;
+      const adjust = windowStart < eventStart ? 0 : -1;
       span = Math.ceil(timeBetween(startDate, endDate, "days"));
+      span = span + adjust;
     } else {
       if (this.cellUnit === CellUnit.Day) {
         eventEnd.setHours(23, 59, 59);
@@ -1347,6 +1349,13 @@ export default class SchedulerData {
               )
                 render = true;
             }
+            if (
+              this.viewType === ViewType.Week ||
+              this.viewType === ViewType.Month ||
+              this.viewType === ViewType.Quarter ||
+              this.viewType === ViewType.Year
+            )
+              if (headerStart.getDate() == eventEnd.getDate()) render = false;
             // console.log(`span: ${span}`)
             header.events[pos] = this._createHeaderEvent(render, span, item);
           }
