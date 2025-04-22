@@ -948,7 +948,7 @@ export default class SchedulerData {
       count: 0,
       addMore: 0,
       addMoreIndex: 0,
-      events: Array(3),
+      events: [],
     };
   }
 
@@ -1315,13 +1315,7 @@ export default class SchedulerData {
                   : 2);
               if (newRowHeight > resourceEvents.rowHeight) resourceEvents.rowHeight = newRowHeight;
             }
-
-            if (pos === -1) {
-              let tmp = 0;
-              while (header.events[tmp] !== undefined) tmp += 1;
-
-              pos = tmp;
-            }
+            pos = header.events.length;
             let render = headerStart <= eventStart || index === 0;
             if (render === false) {
               const previousHeader = resourceEvents.headerItems[index - 1];
