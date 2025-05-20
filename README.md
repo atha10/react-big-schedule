@@ -1,34 +1,44 @@
 # React Big Schedule (react-big-schedule)
 
-[![NPM version][npm-image]][npm-url] [![MIT License][mit-image]][mit-url] [![CodeQL][codeql-image]][codeql-url] [![CodeFactor][codeFactor-badge]][codeFactor-link]
+[![NPM version][npm-image]][npm-url] [![MIT License][mit-image]][mit-url] [![FairShare Tech](https://img.shields.io/badge/Forked%20by-FairShare%20Tech-blue?logo=data:image/png;base64,BASE64_ENCODED_LOGO)](https://fairshare.tech)
 
 [npm-image]: http://img.shields.io/npm/v/react-big-schedule.svg
-[npm-url]: http://npmjs.org/package/react-big-schedule
+[npm-url]: https://www.npmjs.com/package/react-big-schedule-fairshare
 [mit-image]: https://img.shields.io/badge/License-MIT-green.svg
-[mit-url]: https://github.com/react-scheduler/react-big-schedule/blob/master/LICENSE
-[codeql-image]: https://github.com/react-scheduler/react-big-schedule/actions/workflows/github-code-scanning/codeql/badge.svg?branch=master
-[codeql-url]: https://github.com/react-scheduler/react-big-schedule/actions/workflows/github-code-scanning/codeql
-[codeFactor-badge]: https://www.codefactor.io/repository/github/react-scheduler/react-big-schedule/badge
-[codeFactor-link]: https://www.codefactor.io/repository/github/react-scheduler/react-big-schedule
+[mit-url]: https://github.com/atha10/react-big-schedule/blob/master/LICENSE
 
-React Big Schedule is a powerful and intuitive scheduler and resource planning solution built with React. Seamlessly integrate this modern, browser-compatible component into your applications to effectively manage time, appointments, and resources. With drag-and-drop functionality, interactive UI, and granular views, react-big-schedule empowers users to effortlessly schedule and allocate resources with precision.
+# react-big-schedule-fairshare
 
-Enhance productivity and streamline your workflow with this React-based solution, designed to optimize time management and simplify calendar-based operations. Perfect for applications requiring advanced scheduling capabilities, react-big-schedule offers a seamless and intuitive experience for managing appointments, resource allocation, and time slots.
+A powerful React component for building calendar scheduling interfaces with support for resources, time slots, and draggable events. This is a maintained and enhanced fork of [react-big-schedule](https://github.com/StephenChou1017/react-big-scheduler).
 
-Unlock the potential of your React projects with react-big-schedule and revolutionize the way you handle scheduling and resource planning.
+## 🚀 Features
 
-### This project code is forked from:
+- Fully customizable scheduler UI
+- Day, Week, and Month views
+- Drag-and-drop support for events
+- Resource-based scheduling (rooms, people, equipment, etc.)
+- Virtual scrolling for improved performance
+- Enhanced support for carry-forward resources
 
-- [react-big-scheduler](https://stephenchou1017.github.io/scheduler/#/).
-- [react-big-scheduler-stch](https://github.com/hbatalhaStch/react-big-scheduler).
+## ✨ Improvements in This Fork
 
-## Installation
+This fork includes significant enhancements and bug fixes over the original:
 
-To install react-big-schedule-fairshare, use npm:
+- ✅ Improved overall performance and responsiveness
+- 🛠️ Fixed a bug where some events would disappear under certain conditions
+- 🧠 Resolved issues with unexpected behavior for carry-forward resources
+- 🔧 Cleaned up and modularized code for easier customization
+
+---
+
+> Forked and improved by <a href="https://fairshare.tech/" target="_blank"><img src="https://fairshare.tech/wp-content/uploads/2021/09/logo_website.png" alt="Fair Share Logo" height="20" style="vertical-align:middle; margin-right:5px;" /></a> [**Fair Share IT Services Private Limited**](https://fairshare.tech/).  
+> Original project by [**StephenChou1017**](https://github.com/StephenChou1017/react-big-scheduler).
+
+## 📦 Installation
 
 ```bash
-  npm install react-big-schedule-fairshare
-```
+npm install react-big-schedule-fairshare
+
 
 ## Tech Stack
 
@@ -106,22 +116,28 @@ Please refer to the [CHANGELOG.md](https://github.com/react-scheduler/react-big-
 1.) Installation
 
 ```
-  npm i react-big-schedule-fairshare
+
+npm i react-big-schedule-fairshare
+
 ```
 
 or
 
 ```
-  yarn add react-big-schedule-fairshare
+
+yarn add react-big-schedule-fairshare
+
 ```
 
 2.) Import dependencies
 
 ```
+
 import { Scheduler, SchedulerData, ViewType, DATE_FORMAT } from "react-big-schedule-fairshare";
 import dayjs from "dayjs";
 import "react-big-schedule/dist/css/style.css";
-```
+
+````
 
 3.) Basic Usage
 
@@ -201,7 +217,7 @@ schedulerData.setEvents([
   onViewChange={this.onViewChange}
   eventItemClick={this.eventClicked}
 />;
-```
+````
 
 ### Run examples locally
 
