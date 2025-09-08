@@ -1331,6 +1331,9 @@ export default class SchedulerData {
               || this.viewType === ViewType.Month
               || this.viewType === ViewType.Quarter
               || this.viewType === ViewType.Year
+              || this.viewType === ViewType.Custom
+              || this.viewType === ViewType.Custom1
+              || this.viewType === ViewType.Custom2
             ) if (headerStart.getDate() === eventEnd.getDate()) render = false;
             // console.log(`span: ${span}`)
             header.events[pos] = this._createHeaderEvent(render, span, item);
