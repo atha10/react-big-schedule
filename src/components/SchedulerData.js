@@ -1122,7 +1122,7 @@ export default class SchedulerData {
     windowStart.setHours(0, 0, 0, 0);
     windowEnd.setHours(23, 59, 59);
 
-    if (this.viewType === ViewType.Day) {
+    if (this.viewType === ViewType.Day || this.cellUnit === CellUnit.Hour) {
       if (headers.length > 0) {
         const day = new Date(headers[0].time);
         if (
@@ -1161,6 +1161,7 @@ export default class SchedulerData {
       || this.viewType === ViewType.Month
       || this.viewType === ViewType.Quarter
       || this.viewType === ViewType.Year
+      || this.cellUnit === CellUnit.Day
     ) {
       const startDate = windowStart < eventStart ? eventStart : windowStart;
       const endDate = windowEnd > eventEnd ? eventEnd : windowEnd;
