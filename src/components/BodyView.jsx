@@ -17,6 +17,7 @@ function BodyView({ schedulerData }) {
         }
         if (groupOnly) {
           style.backgroundColor = config.groupOnlySlotColor;
+          style.borderRight = 'none';
         }
         if (behaviors.getNonAgendaViewBodyCellBgColorFunc) {
           const cellBgColor = behaviors.getNonAgendaViewBodyCellBgColorFunc(schedulerData, slotId, header);
