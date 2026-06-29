@@ -1,9 +1,13 @@
-import { ConfigType, Dayjs, OptionType } from 'dayjs';
-import React, { CSSProperties } from 'react';
+import { ConfigType, Dayjs, OptionType } from "dayjs";
+import React, { CSSProperties } from "react";
 
-export class Scheduler<EventType extends EventItem = EventItem> extends React.Component<SchedulerProps<EventType>, any> {}
+export class Scheduler<
+  EventType extends EventItem = EventItem,
+> extends React.Component<SchedulerProps<EventType>, any> {}
 
-export const AddMorePopover: <EventType extends EventItem = EventItem>(props: AddMorePopoverProps<EventType>) => React.ReactElement;
+export const AddMorePopover: <EventType extends EventItem = EventItem>(
+  props: AddMorePopoverProps<EventType>,
+) => React.ReactElement;
 
 export interface SchedulerProps<EventType extends EventItem = EventItem> {
   schedulerData: SchedulerData<EventType>;
@@ -11,7 +15,10 @@ export interface SchedulerProps<EventType extends EventItem = EventItem> {
   nextClick(schedulerData: SchedulerData<EventType>): void;
   onSelectDate(schedulerData: SchedulerData<EventType>, date: string): void;
   onViewChange(schedulerData: SchedulerData<EventType>, view: View): void;
-  eventItemClick?: (schedulerData: SchedulerData<EventType>, event: EventType) => void;
+  eventItemClick?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+  ) => void;
   eventItemTemplateResolver?: (
     schedulerData: SchedulerData<EventType>,
     event: EventType,
@@ -20,22 +27,77 @@ export interface SchedulerProps<EventType extends EventItem = EventItem> {
     isEnd: boolean,
     mustAddCssClass: string,
     mustBeHeight: number,
-    agendaMaxEventWidth: number
+    agendaMaxEventWidth: number,
   ) => void;
-  eventItemPopoverTemplateResolver?: (schedulerData: SchedulerData<EventType>, event: EventType, title: string, start: Dayjs, end: Dayjs, statusColor: string) => void;
-  toggleExpandFunc?: (schedulerData: SchedulerData<EventType>, slotId: string) => void;
-  viewEventClick?: (schedulerData: SchedulerData<EventType>, event: EventType) => void;
+  eventItemPopoverTemplateResolver?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+    title: string,
+    start: Dayjs,
+    end: Dayjs,
+    statusColor: string,
+  ) => void;
+  toggleExpandFunc?: (
+    schedulerData: SchedulerData<EventType>,
+    slotId: string,
+  ) => void;
+  viewEventClick?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+  ) => void;
   viewEventText?: string;
   viewEvent2Text?: string;
-  viewEvent2Click?: (schedulerData: SchedulerData<EventType>, event: EventType) => void;
-  updateEventStart?: (schedulerData: SchedulerData<EventType>, event: EventType, newStart: string) => void;
-  updateEventEnd?: (schedulerData: SchedulerData<EventType>, event: EventType, newEnd: string) => void;
-  moveEvent?: (schedulerData: SchedulerData<EventType>, event: EventType, slotId: string, slotName: string, start: string, end: string) => void;
-  newEvent?: (schedulerData: SchedulerData<EventType>, slotId: string, slotName: string, start: string, end: string, type: string, item: EventType) => void;
-  onScrollLeft?: (schedulerData: SchedulerData<EventType>, schedulerContent: React.ReactNode, maxScrollLeft: number) => void;
-  onScrollRight?: (schedulerData: SchedulerData<EventType>, schedulerContent: React.ReactNode, maxScrollLeft: number) => void;
-  onScrollTop?: (schedulerData: SchedulerData<EventType>, schedulerContent: React.ReactNode, maxScrollTop: number) => void;
-  onScrollBottom?: (schedulerData: SchedulerData<EventType>, schedulerContent: React.ReactNode, maxScrollTop: number) => void;
+  viewEvent2Click?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+  ) => void;
+  updateEventStart?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+    newStart: string,
+  ) => void;
+  updateEventEnd?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+    newEnd: string,
+  ) => void;
+  moveEvent?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+    slotId: string,
+    slotName: string,
+    start: string,
+    end: string,
+  ) => void;
+  newEvent?: (
+    schedulerData: SchedulerData<EventType>,
+    slotId: string,
+    slotName: string,
+    start: string,
+    end: string,
+    type: string,
+    item: EventType,
+  ) => void;
+  onScrollLeft?: (
+    schedulerData: SchedulerData<EventType>,
+    schedulerContent: React.ReactNode,
+    maxScrollLeft: number,
+  ) => void;
+  onScrollRight?: (
+    schedulerData: SchedulerData<EventType>,
+    schedulerContent: React.ReactNode,
+    maxScrollLeft: number,
+  ) => void;
+  onScrollTop?: (
+    schedulerData: SchedulerData<EventType>,
+    schedulerContent: React.ReactNode,
+    maxScrollTop: number,
+  ) => void;
+  onScrollBottom?: (
+    schedulerData: SchedulerData<EventType>,
+    schedulerContent: React.ReactNode,
+    maxScrollTop: number,
+  ) => void;
   onSetAddMoreState?: (newState: State<EventType>) => void;
   conflictOccurred?: (
     schedulerData: SchedulerData<EventType>,
@@ -45,15 +107,18 @@ export interface SchedulerProps<EventType extends EventItem = EventItem> {
     slotId: string,
     slotName: string,
     newStart: string,
-    newEnd: string
+    newEnd: string,
   ) => void;
   nonAgendaCellHeaderTemplateResolver?: (
     schedulerData: SchedulerData<EventType>,
     item: { time: string; nonWorkingTime: boolean },
     formattedDateItems: string[],
-    style: CSSProperties
+    style: CSSProperties,
   ) => void;
-  subtitleGetter?: (schedulerData: SchedulerData<EventType>, event: EventType) => void;
+  subtitleGetter?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+  ) => void;
   movingEvent?: (
     schedulerData: SchedulerData<EventType>,
     slotId: string,
@@ -62,15 +127,21 @@ export interface SchedulerProps<EventType extends EventItem = EventItem> {
     newEnd: string,
     action: string,
     type: string,
-    item: EventType
+    item: EventType,
   ) => void;
-  slotClickedFunc?: (schedulerData: SchedulerData<EventType>, slot: ResourceEvent<EventType>) => void;
+  slotClickedFunc?: (
+    schedulerData: SchedulerData<EventType>,
+    slot: ResourceEvent<EventType>,
+  ) => void;
   slotItemTemplateResolver?: (
     schedulerData: SchedulerData<EventType>,
     slot: ResourceEvent<EventType>,
-    slotClickedFunc: (schedulerData: SchedulerData<EventType>, slot: ResourceEvent<EventType>) => void,
+    slotClickedFunc: (
+      schedulerData: SchedulerData<EventType>,
+      slot: ResourceEvent<EventType>,
+    ) => void,
     width: number,
-    clsName: string
+    clsName: string,
   ) => void;
   leftCustomHeader?: React.ReactNode;
   rightCustomHeader?: React.ReactNode;
@@ -85,20 +156,25 @@ export interface AddMorePopoverProps<EventType extends EventItem = EventItem> {
   top: number;
   height: number;
   closeAction: (newState: State<EventType>) => void;
-  subtitleGetter?: SchedulerProps<EventType>['subtitleGetter'];
-  moveEvent?: SchedulerProps<EventType>['moveEvent'];
-  eventItemClick?: SchedulerProps<EventType>['eventItemClick'];
-  viewEventClick?: SchedulerProps<EventType>['viewEventClick'];
+  subtitleGetter?: SchedulerProps<EventType>["subtitleGetter"];
+  moveEvent?: SchedulerProps<EventType>["moveEvent"];
+  eventItemClick?: SchedulerProps<EventType>["eventItemClick"];
+  viewEventClick?: SchedulerProps<EventType>["viewEventClick"];
   viewEventText?: string;
   viewEvent2Text?: string;
-  viewEvent2Click?: SchedulerProps<EventType>['viewEvent2Click'];
-  eventItemTemplateResolver?: SchedulerProps<EventType>['eventItemTemplateResolver'];
+  viewEvent2Click?: SchedulerProps<EventType>["viewEvent2Click"];
+  eventItemTemplateResolver?: SchedulerProps<EventType>["eventItemTemplateResolver"];
 }
 
 export class SchedulerData<EventType extends EventItem = EventItem> {
   localeDayjs(date?: ConfigType): Dayjs;
   localeDayjs(date?: ConfigType, format?: OptionType, strict?: boolean): Dayjs;
-  localeDayjs(date?: ConfigType, format?: OptionType, locale?: string, strict?: boolean): Dayjs;
+  localeDayjs(
+    date?: ConfigType,
+    format?: OptionType,
+    locale?: string,
+    strict?: boolean,
+  ): Dayjs;
 
   cellUnit: CellUnit;
   viewType: ViewType;
@@ -121,7 +197,7 @@ export class SchedulerData<EventType extends EventItem = EventItem> {
     showAgenda?: boolean,
     isEventPerspective?: boolean,
     newConfig?: SchedulerDataConfig,
-    newBehaviours?: SchedulerDataBehaviors<EventType>
+    newBehaviours?: SchedulerDataBehaviors<EventType>,
   );
 
   setSchedulerLocale(preset: string | ILocale, object?: Partial<ILocale>): void;
@@ -130,7 +206,11 @@ export class SchedulerData<EventType extends EventItem = EventItem> {
   setEvents(events: EventType[]): void;
   prev(): void;
   next(): void;
-  setViewType(viewType?: ViewType, showAgenda?: boolean, isEventPerspective?: boolean): void;
+  setViewType(
+    viewType?: ViewType,
+    showAgenda?: boolean,
+    isEventPerspective?: boolean,
+  ): void;
   setDate(date?: string): void;
   setEventGroups(eventGroups: EventGroup<EventType>[]): void;
   setEventGroupsAutoGenerated(autoGenerated: boolean): void;
@@ -139,14 +219,25 @@ export class SchedulerData<EventType extends EventItem = EventItem> {
   addEventGroup(eventGroup: EventGroup<EventType>): void;
   updateEventStart(event: EventType, newStart: string): void;
   updateEventEnd(event: EventType, newEnd: string): void;
-  moveEvent(event: EventType, newSlotId: string, newSlotName: string, newStart: string, newEnd: string): void;
+  moveEvent(
+    event: EventType,
+    newSlotId: string,
+    newSlotName: string,
+    newStart: string,
+    newEnd: string,
+  ): void;
   getSlots(): EventGroup<EventType>[] | Resource[];
   addResource(resource: Resource): void;
   getSlotById(slotId: string): EventType;
   toggleExpandStatus(slotId: string): void;
   removeEventById(eventId: string): void;
   removeEvent(event: EventType): void;
-  isEventInTimeWindow(eventStart: Date | Dayjs, eventEnd: Date | Dayjs, windowStart: Date | Dayjs, windowEnd: Date | Dayjs): boolean;
+  isEventInTimeWindow(
+    eventStart: Date | Dayjs,
+    eventEnd: Date | Dayjs,
+    windowStart: Date | Dayjs,
+    windowEnd: Date | Dayjs,
+  ): boolean;
   addEvent(newEvent: EventType): void;
   getResourceById(resourceId: string): ResourceEvent<EventType>;
   getViewStartDate(): Dayjs;
@@ -159,7 +250,12 @@ export class DnDContext {
 }
 
 export class DnDSource {
-  constructor(resolveDragObjFunc: (props: {}) => any, DecoratedComponent: React.ReactNode, dragAnDropEnabled: boolean, dndType: string);
+  constructor(
+    resolveDragObjFunc: (props: {}) => any,
+    DecoratedComponent: React.ReactNode,
+    dragAnDropEnabled: boolean,
+    dndType: string,
+  );
 }
 
 export enum CellUnit {
@@ -284,24 +380,24 @@ export interface SchedulerDataConfig {
   quarterMaxEvents?: number;
   yearMaxEvents?: number;
   customMaxEvents?: number;
-  eventItemPopoverTrigger?: 'hover' | 'click';
+  eventItemPopoverTrigger?: "hover" | "click";
   eventItemPopoverPlacement?:
-    | 'topLeftMousePosition'
-    | 'bottomLeftMousePosition'
-    | 'topRightMousePosition'
-    | 'bottomRightMousePosition'
-    | 'top'
-    | 'left'
-    | 'right'
-    | 'bottom'
-    | 'topLeft'
-    | 'topRight'
-    | 'bottomLeft'
-    | 'bottomRight'
-    | 'leftTop'
-    | 'leftBottom'
-    | 'rightTop'
-    | 'rightBottom';
+    | "topLeftMousePosition"
+    | "bottomLeftMousePosition"
+    | "topRightMousePosition"
+    | "bottomRightMousePosition"
+    | "top"
+    | "left"
+    | "right"
+    | "bottom"
+    | "topLeft"
+    | "topRight"
+    | "bottomLeft"
+    | "bottomRight"
+    | "leftTop"
+    | "leftBottom"
+    | "rightTop"
+    | "rightBottom";
   eventItemPopoverWidth?: number;
   eventItemHeight?: number;
   eventItemLineHeight?: number;
@@ -345,6 +441,7 @@ export interface SchedulerDataConfig {
   minuteStep?: number;
   views?: View[];
   responsiveByParent?: boolean;
+  showSameDatesEvent?: boolean;
 }
 
 export enum SummaryPos {
@@ -356,23 +453,52 @@ export enum SummaryPos {
   BottomLeft,
 }
 
-export interface SchedulerDataBehaviors<EventType extends EventItem = EventItem> {
-  isNonWorkingTimeFunc?: (schedulerData: SchedulerData<EventType>, time: string) => boolean;
-  getCustomDateFunc?: (schedulerData: SchedulerData<EventType>, num: number, date?: string | Dayjs) => { startDate: string | Dayjs; endDate: string | Dayjs; cellUnit: CellUnit };
-  getEventTextFunc?: (schedulerData: SchedulerData<EventType>, event: EventType) => string;
-  getDateLabel?: (schedulerData: SchedulerData<EventType>, viewType: ViewType, startDate: string | Date, endDate: string | Date) => string;
-  getScrollSpecialDayjs?: (schedulerData: SchedulerData<EventType>, startDayjs: Dayjs, endDays: Dayjs) => Dayjs;
+export interface SchedulerDataBehaviors<
+  EventType extends EventItem = EventItem,
+> {
+  isNonWorkingTimeFunc?: (
+    schedulerData: SchedulerData<EventType>,
+    time: string,
+  ) => boolean;
+  getCustomDateFunc?: (
+    schedulerData: SchedulerData<EventType>,
+    num: number,
+    date?: string | Dayjs,
+  ) => {
+    startDate: string | Dayjs;
+    endDate: string | Dayjs;
+    cellUnit: CellUnit;
+  };
+  getEventTextFunc?: (
+    schedulerData: SchedulerData<EventType>,
+    event: EventType,
+  ) => string;
+  getDateLabel?: (
+    schedulerData: SchedulerData<EventType>,
+    viewType: ViewType,
+    startDate: string | Date,
+    endDate: string | Date,
+  ) => string;
+  getScrollSpecialDayjs?: (
+    schedulerData: SchedulerData<EventType>,
+    startDayjs: Dayjs,
+    endDays: Dayjs,
+  ) => Dayjs;
   getSummaryFunc?: (
     schedulerData: SchedulerData<EventType>,
     headerEvents: HeaderEvent<EventType>[],
     slotId: string,
     slotName: string,
     headerStart: string,
-    headerEnd: string
+    headerEnd: string,
   ) => { text: string; color: string; fontSize: string };
-  getNonAgendaViewBodyCellBgColorFunc?: (schedulerData: SchedulerData<EventType>, slotId: string, header: { nonWorkingTime: boolean; time: string }) => string;
+  getNonAgendaViewBodyCellBgColorFunc?: (
+    schedulerData: SchedulerData<EventType>,
+    slotId: string,
+    header: { nonWorkingTime: boolean; time: string },
+  ) => string;
 }
 
-export const DATE_FORMAT = 'YYYY-MM-DD';
+export const DATE_FORMAT = "YYYY-MM-DD";
 
-export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+export const DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
