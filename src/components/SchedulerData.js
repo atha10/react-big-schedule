@@ -1335,7 +1335,7 @@ export default class SchedulerData {
               || this.viewType === ViewType.Custom
               || this.viewType === ViewType.Custom1
               || this.viewType === ViewType.Custom2
-            ) if (headerStart.getDate() === eventEnd.getDate()) render = this.config.showSameDatesEvent;
+            ) if (headerStart.getDate() === eventEnd.getDate() && eventStart.getDate() === eventEnd.getDate()) render = this.config.showSameDatesEvent;
             // console.log(`span: ${span}`)
             header.events[pos] = this._createHeaderEvent(render, span, item);
           }
