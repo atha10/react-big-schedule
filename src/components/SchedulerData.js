@@ -1288,7 +1288,13 @@ export default class SchedulerData {
     const cellMaxEventsCount = this.getCellMaxEvents();
     const cellMaxEventsCountValue = 30;
 
-    this.events.forEach(item => {
+    // place events in start order so each one takes the lowest free row
+    const sortedEvents = [...this.events].sort((a, b) => {
+      const startDiff = new Date(a.start) - new Date(b.start);
+      return startDiff !== 0 ? startDiff : new Date(a.end) - new Date(b.end);
+    });
+
+    sortedEvents.forEach(item => {
       const resourceEventsList = initRenderData.filter(
         x => x.slotId === this._getEventSlotId(item),
       );
@@ -1297,48 +1303,60 @@ export default class SchedulerData {
         const span = this._getSpan(item.start, item.end, this.headers);
         const eventStart = new Date(item.start);
         const eventEnd = new Date(item.end);
-        let pos = -1;
 
+        let occupiedIndexes = [];
         resourceEvents.headerItems.forEach((header, index) => {
           const headerStart = new Date(header.start);
           const headerEnd = new Date(header.end);
-          if (headerEnd > eventStart && headerStart < eventEnd) {
-            header.count += 1;
-            if (header.count > resourceEvents.rowMaxCount) {
-              resourceEvents.rowMaxCount = header.count;
-              const rowsCount = cellMaxEventsCount <= cellMaxEventsCountValue
-                && resourceEvents.rowMaxCount > cellMaxEventsCount
-                ? cellMaxEventsCount
-                : resourceEvents.rowMaxCount;
-              const newRowHeight = rowsCount * this.config.eventItemLineHeight
-                + (this.config.creatable && this.config.checkConflict === false
-                  ? 20
-                  : 2);
-              if (newRowHeight > resourceEvents.rowHeight) resourceEvents.rowHeight = newRowHeight;
-            }
-            pos = header.events.length;
-            let render = headerStart <= eventStart || index === 0;
-            if (render === false) {
-              const previousHeader = resourceEvents.headerItems[index - 1];
-              const previousHeaderStart = new Date(previousHeader.start);
-              const previousHeaderEnd = new Date(previousHeader.end);
-              if (
-                previousHeaderEnd <= eventStart
-                || previousHeaderStart >= eventEnd
-              ) render = true;
-            }
-            if (
-              this.viewType === ViewType.Week
-              || this.viewType === ViewType.Month
-              || this.viewType === ViewType.Quarter
-              || this.viewType === ViewType.Year
-              || this.viewType === ViewType.Custom
-              || this.viewType === ViewType.Custom1
-              || this.viewType === ViewType.Custom2
-            ) if (headerStart.getDate() === eventEnd.getDate() && eventStart.getDate() === eventEnd.getDate()) render = this.config.showSameDatesEvent;
-            // console.log(`span: ${span}`)
-            header.events[pos] = this._createHeaderEvent(render, span, item);
+          if (headerEnd > eventStart && headerStart < eventEnd) occupiedIndexes.push(index);
+        });
+        // in day cells only the cells the event is drawn over are occupied,
+        // so a checkout day does not push the next check-in to a new row
+        if (this.cellUnit === CellUnit.Day && occupiedIndexes.length > 0) {
+          occupiedIndexes = occupiedIndexes.slice(0, Math.max(span, 1));
+        }
+
+        const isRowFree = row => occupiedIndexes.every(index => resourceEvents.headerItems[index].events[row] === undefined);
+        let pos = 0;
+        while (!isRowFree(pos)) pos += 1;
+
+        occupiedIndexes.forEach(index => {
+          const header = resourceEvents.headerItems[index];
+          const headerStart = new Date(header.start);
+          header.count += 1;
+          const usedRows = Math.max(header.count, pos + 1);
+          if (usedRows > resourceEvents.rowMaxCount) {
+            resourceEvents.rowMaxCount = usedRows;
+            const rowsCount = cellMaxEventsCount <= cellMaxEventsCountValue
+              && resourceEvents.rowMaxCount > cellMaxEventsCount
+              ? cellMaxEventsCount
+              : resourceEvents.rowMaxCount;
+            const newRowHeight = rowsCount * this.config.eventItemLineHeight
+              + (this.config.creatable && this.config.checkConflict === false
+                ? 20
+                : 2);
+            if (newRowHeight > resourceEvents.rowHeight) resourceEvents.rowHeight = newRowHeight;
           }
+          let render = headerStart <= eventStart || index === 0;
+          if (render === false) {
+            const previousHeader = resourceEvents.headerItems[index - 1];
+            const previousHeaderStart = new Date(previousHeader.start);
+            const previousHeaderEnd = new Date(previousHeader.end);
+            if (
+              previousHeaderEnd <= eventStart
+              || previousHeaderStart >= eventEnd
+            ) render = true;
+          }
+          if (
+            this.viewType === ViewType.Week
+            || this.viewType === ViewType.Month
+            || this.viewType === ViewType.Quarter
+            || this.viewType === ViewType.Year
+            || this.viewType === ViewType.Custom
+            || this.viewType === ViewType.Custom1
+            || this.viewType === ViewType.Custom2
+          ) if (headerStart.getDate() === eventEnd.getDate() && eventStart.getDate() === eventEnd.getDate()) render = this.config.showSameDatesEvent;
+          header.events[pos] = this._createHeaderEvent(render, span, item);
         });
       }
     });
