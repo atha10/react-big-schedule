@@ -1312,8 +1312,10 @@ export default class SchedulerData {
         });
         // in day cells only the cells the event is drawn over are occupied,
         // so a checkout day does not push the next check-in to a new row
-        if (this.cellUnit === CellUnit.Day && occupiedIndexes.length > 0) {
-          occupiedIndexes = occupiedIndexes.slice(0, Math.max(span, 1));
+        if (this.cellUnit === CellUnit.Day) {
+          // span 0 = checkout before any visible cell (e.g. leaves on the 1st), nothing to draw
+          if (span < 1) return;
+          occupiedIndexes = occupiedIndexes.slice(0, span);
         }
 
         const isRowFree = row => occupiedIndexes.every(index => resourceEvents.headerItems[index].events[row] === undefined);
